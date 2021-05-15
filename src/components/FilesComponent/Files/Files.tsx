@@ -1,6 +1,5 @@
 import DragAndDropArea from 'components/DragAndDropComponent/DragAndDropArea/DragAndDropArea';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import {  NativeTypes } from 'react-dnd-html5-backend';
 import { ReactComponent as EmptyDropZoneIcon } from 'assets/images/icons/storage-box.svg';
 import { memo } from 'react';
 import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
@@ -36,6 +35,7 @@ const Files: React.FC = () =>
             'w-full sm:w-9/12 flex flex-wrap',
             !(files && files.length > 0) && 'items-center justify-center'
           )}>
+
             {
               files && files.length > 0
                 ?
@@ -57,27 +57,30 @@ const Files: React.FC = () =>
                 :
                 <p className="text-center text-gray-500 text-sm">No files added</p>
             }
+            
           </div>
           <div className="w-full sm:w-3/12 p-2">
-            <DndProvider backend={HTML5Backend}>
-              <DragAndDropArea>
-                {(ref : any, isActive : boolean )=>(
-                  <div className="dragAndDropArea" ref={ref}>
-                    <div  className="drop-area bg-white w-full h-full rounded-md border border-dashed border-gray-500 flex items-center justify-center">
-                      <div className="drop-area__wrapper py-3">
-                        <span className="flex mx-auto justify-center">
-                          <EmptyDropZoneIcon className="h-auto w-8 object-cover"/>
-                        </span>
-                        <h2 className="text-center font-medium text-gray-700 mt-2">Add your files </h2>
-                        <p className="text-center text-gray-500 text-sm">
-                          { isActive ? 'Release file to drop ' : 'Drag and drop files here' }
-                        </p>
-                      </div>
+            
+            <DragAndDropArea
+              accept={[NativeTypes.FILE]}
+            >
+              {(ref : any, isActive : boolean )=>(
+                <div className="dragAndDropArea" ref={ref}>
+                  <div  className="drop-area bg-white w-full h-full rounded-md border border-dashed border-gray-500 flex items-center justify-center">
+                    <div className="drop-area__wrapper py-3">
+                      <span className="flex mx-auto justify-center">
+                        <EmptyDropZoneIcon className="h-auto w-8 object-cover"/>
+                      </span>
+                      <h2 className="text-center font-medium text-gray-700 mt-2">Add your files </h2>
+                      <p className="text-center text-gray-500 text-sm">
+                        { isActive ? 'Release file to drop ' : 'Drag and drop files here' }
+                      </p>
                     </div>
                   </div>
-                )}
-              </DragAndDropArea>
-            </DndProvider>
+                </div>
+              )}
+            </DragAndDropArea>
+
           </div>
         </div>
       </div>

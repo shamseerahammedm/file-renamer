@@ -3,15 +3,42 @@ import folderIcon from 'assets/images/icons/folder.svg';
 import { ReactComponent as CloseIcon } from 'assets/images/icons/close.svg';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { makeFolders } from 'redux/files/filesActions';
+import { forwardRef } from 'react';
+
+const textGenerator = (numberOfFiles : number, isActive : boolean) => {
+  if(numberOfFiles > 0)
+  {
+    if(isActive)
+    {
+      return 'Drop here';
+    }
+    else
+    {
+      return `${numberOfFiles} Files`;
+    }
+  }
+  else
+  {
+    return 'Empty';
+  }
+};
 
 interface ProcessingItemProps {
     type : string;
     name : string;
     numberOfFiles : number;
-    folderId : string
+    folderId : string;
+    ref : any;
+    isActive : boolean;
 }
 
-const ProcessingItem: React.FC<ProcessingItemProps> = ({ type, name, numberOfFiles, folderId }) => {
+const ProcessingItem: React.FC<ProcessingItemProps> = forwardRef(({
+  type,
+  name,
+  numberOfFiles,
+  folderId,
+  isActive 
+}, ref: any ) => {
 
   const dispatch = useDispatch();
   const { folders } = useSelector((state: RootStateOrAny) => state.files);
@@ -22,8 +49,9 @@ const ProcessingItem: React.FC<ProcessingItemProps> = ({ type, name, numberOfFil
     }) => folderItem.folderId !== folderId);
     dispatch(makeFolders(newFoldersArray));
   };
+
   return (
-    <div className="processing-item w-full p-2">
+    <div className="processing-item w-full p-2" ref={ref}>
       <div style={{ background : '#EBF2FC' }} className="processing-item__wrapper rounded-lg px-4 py-5 relative">
         <div 
           onClick={()=>removeFolderHandler(folderId)} 
@@ -43,10 +71,14 @@ const ProcessingItem: React.FC<ProcessingItemProps> = ({ type, name, numberOfFil
         </div>
         
         <h3 style={{ color : '#26327F' }} className="processing-item font-semibold">{name}</h3>
-        <div className="processing-item__files text-xs text-gray-600">{numberOfFiles === 0 ? 'Empty Folder' : numberOfFiles}</div>
+        <div className="processing-item__files text-xs text-gray-600">
+          {
+            textGenerator(numberOfFiles, isActive)
+          }
+        </div>
       </div>
     </div>
   );
-};
+});
 
 export default ProcessingItem;

@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { makeFolders } from 'redux/files/filesActions';
 import { v4 as uuidv4 } from 'uuid';
+import DragAndDropArea from 'components/DragAndDropComponent/DragAndDropArea/DragAndDropArea';
 
 const ProcessingSpace: React.FC = () =>
 {
@@ -40,12 +41,20 @@ const ProcessingSpace: React.FC = () =>
                     :
                     folders.map((folderItem: any, index: number) => (
                       <div className="w-full sm:w-2/12" key={index}>
-                        <ProcessingItem
-                          type={folderItem.type}
-                          name={folderItem.name}
-                          numberOfFiles={folderItem.numberOfFiles}
-                          folderId={folderItem.folderId}
-                        />
+                        <DragAndDropArea
+                          accept="abcd"
+                        >
+                          {(ref : any, isActive : boolean)=>(
+                            <ProcessingItem
+                              type={folderItem.type}
+                              name={folderItem.name}
+                              numberOfFiles={folderItem.numberOfFiles}
+                              folderId={folderItem.folderId}
+                              ref={ref}
+                              isActive={isActive}
+                            />
+                          )}
+                        </DragAndDropArea>
                       </div>
                     ))
                 }

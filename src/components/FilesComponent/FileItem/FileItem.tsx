@@ -1,4 +1,5 @@
 import { ReactComponent as CloseIcon } from 'assets/images/icons/close.svg';
+import { useDrag } from 'react-dnd';
 
 interface Props {
   removeItem? : ( fileId : string ) => void,
@@ -20,8 +21,23 @@ const FileItem : React.FC<Props> = ({
 
   const isImage = (fileExtension === 'jpg' || fileExtension === 'jpeg' ) || fileExtension === 'png' || fileExtension === 'svg' ? true : false;
 
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'abcd',
+    item: 'abcdef',
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      if (item && dropResult) {
+        // alert(`You dropped ${item.name} into ${dropResult.name}!`);
+      }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+      handlerId: monitor.getHandlerId(),
+    }),
+  }));
+
   return (
-    <div className="ImageItem p-2 hello w-1/4">
+    <div ref={drag} className="ImageItem p-2 hello w-1/4">
       <div className="ImageItemWrapper rounded-lg overflow-hidden shadow-md relative" style={{ transform: 'translate(0, 0)' }}>
         <div 
           id={fileId} 

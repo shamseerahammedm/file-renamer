@@ -1,17 +1,22 @@
 
 import {  useDrop } from 'react-dnd';
-import { NativeTypes } from 'react-dnd-html5-backend';
+
 import { useDispatch } from 'react-redux';
 import { setFilesAsync } from 'redux/files/filesActions';
 
 interface Props{
-  children? : any
+  children? : any,
+  accept : any
 }
 
-const DragAndDropArea : React.FC<Props> = ({ children }) => {
+const DragAndDropArea : React.FC<Props> = ({ 
+  children,
+  accept 
+}) => {
+
   const dispatch = useDispatch();
   const [{ canDrop, isOver, ...otherProps }, drop] = useDrop(() => ({
-    accept: [NativeTypes.FILE],
+    accept: accept,
     drop: (item:any, monitor) => {
       dispatch(setFilesAsync(item.files));
     },
@@ -21,6 +26,7 @@ const DragAndDropArea : React.FC<Props> = ({ children }) => {
     }),
   }));
 
+  console.log('accept', accept);
   console.log('otherProps', otherProps);
 
   const isActive = canDrop && isOver;

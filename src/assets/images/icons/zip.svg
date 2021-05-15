@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 30 25">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #707afe;
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        font-size: 11px;
+        fill: #f6f8fb;
+        font-family: Montserrat;
+      }
+    </style>
+  </defs>
+  <path id="folder_icon" data-name="folder icon" class="cls-1" d="M3598.81,836.716a3.906,3.906,0,0,0-2.85-1.173h-12.11v-0.568a3.812,3.812,0,0,0-1.19-2.806,3.941,3.941,0,0,0-2.85-1.172h-5.77a3.909,3.909,0,0,0-2.85,1.172,3.812,3.812,0,0,0-1.19,2.806v17.05a3.81,3.81,0,0,0,1.19,2.805,3.906,3.906,0,0,0,2.85,1.173h21.92a3.906,3.906,0,0,0,2.85-1.173,3.81,3.81,0,0,0,1.19-2.805v-12.5A3.812,3.812,0,0,0,3598.81,836.716Z" transform="translate(-3570 -831)"/>
+  <text id="zip" class="cls-2" x="6.655" y="17.757">zip</text>
+</svg>

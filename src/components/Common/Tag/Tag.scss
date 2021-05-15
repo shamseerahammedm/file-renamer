@@ -1,0 +1,22 @@
+.ant-radio-button-wrapper{
+	border-radius: 20px!important;
+	margin-right: 5px!important;
+	height: initial!important;
+	border: 1px solid #7B9EA8!important;
+	position: static!important;
+	background: #EDF2F7!important;
+	line-height: unset!important;
+	padding: 0 10px!important;
+	&.ant-radio-button-wrapper-checked{
+		border-radius: 20px;
+		background: #4957EC!important;
+		span{
+			color: white;
+		}
+	}
+	span{
+		text-transform: uppercase;
+		color: #26327F;
+		user-select: none;
+	}
+}

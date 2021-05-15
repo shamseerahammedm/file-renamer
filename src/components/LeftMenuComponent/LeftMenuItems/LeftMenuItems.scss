@@ -1,0 +1,9 @@
+.left-menu-items{
+    a:not(.active){
+        border-left: 2px solid transparent;
+    }
+    .active{
+        background: #707AFE;
+        border-left: 2px solid white;
+    }
+}

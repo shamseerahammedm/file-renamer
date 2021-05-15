@@ -3,7 +3,8 @@ import Button from 'components/Common/Button/Button';
 
 const AddProcessingItem = (props : any) => {
   return (
-    <div className="add-processing-item w-full p-2 h-full" 
+    <div 
+      className="add-processing-item w-full p-2 h-full" 
       {...props}
     >
       <Button 

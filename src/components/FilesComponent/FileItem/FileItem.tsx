@@ -1,5 +1,7 @@
 import { ReactComponent as CloseIcon } from 'assets/images/icons/close.svg';
 import { useDrag } from 'react-dnd';
+import { toast } from 'react-toastify';
+import { itemTypes } from 'utils/constants';
 
 interface Props {
   removeItem? : ( fileId : string ) => void,
@@ -22,12 +24,27 @@ const FileItem : React.FC<Props> = ({
   const isImage = (fileExtension === 'jpg' || fileExtension === 'jpeg' ) || fileExtension === 'png' || fileExtension === 'svg' ? true : false;
 
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'abcd',
-    item: 'abcdef',
+    type: itemTypes.DROPPED_FILE,
+    item: {
+      name : filename
+    },
     end: (item, monitor) => {
-      const dropResult = monitor.getDropResult();
+      const dropResult: any = monitor.getDropResult();
+      const alertDiv = (
+        <div className="text-black">
+          You dropped <span>{item.name}</span> into {dropResult.name} 
+        </div>
+      );
       if (item && dropResult) {
-        // alert(`You dropped ${item.name} into ${dropResult.name}!`);
+
+        toast(alertDiv, {
+          position: 'bottom-right',
+          autoClose: 900000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     },
     collect: (monitor) => ({

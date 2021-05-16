@@ -6,36 +6,37 @@ import { setFilesAsync } from 'redux/files/filesActions';
 
 interface Props{
   children? : any,
-  accept : any
+  accept : any,
+  name : string
 }
 
 const DragAndDropArea : React.FC<Props> = ({ 
   children,
-  accept 
+  accept,
+  name, 
 }) => {
 
+
   const dispatch = useDispatch();
-  const [{ canDrop, isOver, ...otherProps }, drop] = useDrop(() => ({
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: accept,
-    drop: (item:any, monitor) => {
-      dispatch(setFilesAsync(item.files));
-    },
+    // item : {
+    //   name : name
+    // },
+    drop: () => ({ name }),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
   }));
 
-  console.log('accept', accept);
-  console.log('otherProps', otherProps);
-
   const isActive = canDrop && isOver;
 
-  return (
-    <>
-      {children(drop, isActive)}
-    </>
-  );
+  // console.log('isActive', isActive);
+  // console.log('accept', accept);
+  // console.log('otherProps', otherProps);
+
+  return children(drop, isActive);
 };
 
 export default DragAndDropArea;

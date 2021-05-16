@@ -7,11 +7,11 @@ import clsx from 'clsx';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { makeFolders } from 'redux/files/filesActions';
 import { v4 as uuidv4 } from 'uuid';
-import DragAndDropArea from 'components/DragAndDropComponent/DragAndDropArea/DragAndDropArea';
 
 const ProcessingSpace: React.FC = () =>
 {
   const dispatch = useDispatch();
+
   const { folders } = useSelector((state: RootStateOrAny) => state.files);
   const isProcessingSpaceEmpty = folders.length === 0;
 
@@ -39,24 +39,18 @@ const ProcessingSpace: React.FC = () =>
                     ?
                     <p className="text-center text-gray-600 text-sm">No ZIP folders click on the <img src={addIcon} className="inline-block h-auto w-5 object-cover" alt="add button icon" /> icon to make one, and drag and drop the files inside them</p>
                     :
-                    folders.map((folderItem: any, index: number) => (
-                      <div className="w-full sm:w-2/12" key={index}>
-                        <DragAndDropArea
-                          accept="abcd"
-                        >
-                          {(ref : any, isActive : boolean)=>(
-                            <ProcessingItem
-                              type={folderItem.type}
-                              name={folderItem.name}
-                              numberOfFiles={folderItem.numberOfFiles}
-                              folderId={folderItem.folderId}
-                              ref={ref}
-                              isActive={isActive}
-                            />
-                          )}
-                        </DragAndDropArea>
-                      </div>
-                    ))
+                    folders.map((folderItem: any, index: number) => {
+                      return (
+                        <div className="w-full md:w-3/12 lg:w-2/12" key={index}>
+                          <ProcessingItem
+                            type={folderItem.type}
+                            name={folderItem.name}
+                            numberOfFiles={folderItem.numberOfFiles}
+                            folderId={folderItem.folderId}
+                          />
+                        </div>
+                      );
+                    })
                 }
               </div>
 

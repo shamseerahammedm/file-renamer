@@ -6,6 +6,7 @@ import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import FileItem from '../FileItem/FileItem';
 import { updateFilesAfterFiltering } from 'redux/files/filesActions';
 import clsx from 'clsx';
+import { useHandleImportFiles } from './FilesHooks';
 
 const Files: React.FC = () =>
 {
@@ -15,6 +16,9 @@ const Files: React.FC = () =>
     const fileArray =  files.filter((fileItem : any) => fileItem.fileId !== fileId);
     dispatch(updateFilesAfterFiltering(fileArray));
   };
+
+  // handle import files from PC
+  const { ref, isActive } = useHandleImportFiles();
 
   return (
     <div className="files px-2 mt-4 ">
@@ -41,17 +45,19 @@ const Files: React.FC = () =>
                 ?
                 <>
                   {
-                    files.map((item : any, i : number) => (
-                      <FileItem 
-                        fileId={item.fileId}
-                        fileExtension={item.fileExtension}
-                        imageSrcUrl={item.imageSrcUrl}
-                        filename={item.filename}
-                        fileSizeToShow={item.fileSizeToShow}
-                        removeItem={removeItem}
-                        key={i}
-                      />
-                    ))
+                    files.map((item : any, i : number) => {
+                      return (
+                        <FileItem 
+                          fileId={item.fileId}
+                          fileExtension={item.fileExtension}
+                          imageSrcUrl={item.imageSrcUrl}
+                          filename={item.name}
+                          fileSizeToShow={item.fileSizeToShow}
+                          removeItem={removeItem}
+                          key={i}
+                        />
+                      );
+                    })
                   }
                 </>
                 :
@@ -61,25 +67,19 @@ const Files: React.FC = () =>
           </div>
           <div className="w-full sm:w-3/12 p-2">
             
-            <DragAndDropArea
-              accept={[NativeTypes.FILE]}
-            >
-              {(ref : any, isActive : boolean )=>(
-                <div className="dragAndDropArea" ref={ref}>
-                  <div  className="drop-area bg-white w-full h-full rounded-md border border-dashed border-gray-500 flex items-center justify-center">
-                    <div className="drop-area__wrapper py-3">
-                      <span className="flex mx-auto justify-center">
-                        <EmptyDropZoneIcon className="h-auto w-8 object-cover"/>
-                      </span>
-                      <h2 className="text-center font-medium text-gray-700 mt-2">Add your files </h2>
-                      <p className="text-center text-gray-500 text-sm">
-                        { isActive ? 'Release file to drop ' : 'Drag and drop files here' }
-                      </p>
-                    </div>
-                  </div>
+            <div className="dragAndDropArea" ref={ref}>
+              <div  className="drop-area bg-white w-full h-full rounded-md border border-dashed border-gray-500 flex items-center justify-center">
+                <div className="drop-area__wrapper py-3">
+                  <span className="flex mx-auto justify-center">
+                    <EmptyDropZoneIcon className="h-auto w-8 object-cover"/>
+                  </span>
+                  <h2 className="text-center font-medium text-gray-700 mt-2">Add your files </h2>
+                  <p className="text-center text-gray-500 text-sm">
+                    { isActive ? 'Release file to drop ' : 'Drag and drop files here' }
+                  </p>
                 </div>
-              )}
-            </DragAndDropArea>
+              </div>
+            </div>
 
           </div>
         </div>

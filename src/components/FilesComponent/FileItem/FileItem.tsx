@@ -29,23 +29,26 @@ const FileItem : React.FC<Props> = ({
       name : filename
     },
     end: (item, monitor) => {
-      const dropResult: any = monitor.getDropResult();
-      const alertDiv = (
-        <div className="text-black">
-          You dropped <span>{item.name}</span> into {dropResult.name} 
-        </div>
-      );
-      if (item && dropResult) {
-
-        toast(alertDiv, {
-          position: 'bottom-right',
-          autoClose: 900000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+      if(item.name)
+      {
+        const dropResult: any = monitor.getDropResult();
+        const alertDiv = (
+          <div className="text-black">
+            You dropped <span>{item.name}</span> into {dropResult.name} 
+          </div>
+        );
+        if (item && dropResult) {
+          toast(alertDiv, {
+            position: 'bottom-right',
+            autoClose: 900000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
       }
+      
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),

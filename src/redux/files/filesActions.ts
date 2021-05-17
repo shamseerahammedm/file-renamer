@@ -29,9 +29,9 @@ export const setFilesAsync = (fileData: any) =>
       });
       const fileDataResolved = await Promise.all(fileDetails);
       dispatch(handleNonAPIActionSuccess(fileActionTypes.SET_FILES_SUCCESS, fileDataResolved));
-      //   const { files : { files } } = getState();
+      const { files : { files } } = getState();
       // setting storage filter with state data for filtering purposes
-      //   dispatch(setFilesStorageFilter(files));
+      dispatch(setFilesStorageFilter(files));
     }
     catch (err)
     {
@@ -49,14 +49,14 @@ export const updateFilesAfterFiltering = (files: Array<any>) => ({
   payload: files
 });
 
-export const setFilesStorageFilter = (files: any) => ({
+export const setFilesStorageFilter = (files: Array<any>) => ({
   type: fileActionTypes.SET_FILES_STORAGE_FILTER,
   payload: files
 });
 
-export const deleteFileItem = (dataSet: any) => ({
+export const deleteFileItem = (fileId: string) => ({
   type: fileActionTypes.REMOVE_FILE_ITEM,
-  payload: dataSet
+  payload: fileId
 });
 
 export const makeFolders = (folderData: Array<any>) => ({

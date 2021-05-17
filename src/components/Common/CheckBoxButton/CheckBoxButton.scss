@@ -1,0 +1,27 @@
+@import "variables";
+
+.CheckBoxButton {
+	background-color: #efefef;
+	border-radius: 20px;
+	overflow: auto;
+	margin-right: 5px;
+	
+	label {
+		float: left;
+		width: 4em;
+		user-select:none;
+		span {
+			text-align: center;
+			padding: 2px 0px;
+			display: block;
+		}
+		input {
+			position: absolute;
+			top: -20px;
+		}
+	}
+	input:checked + span {
+		background: $primary_main;
+		color: #fff;
+	}
+}

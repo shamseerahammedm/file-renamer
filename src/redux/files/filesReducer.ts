@@ -64,8 +64,8 @@ const filesReducer = (state = INITIAL_STATE, action : any) => {
   case fileActionTypes.REMOVE_FILE_ITEM :
     return {
       ...state,
-      files : deleteFileItem(action.payload, 'files'),
-      filesStorageForFilter : deleteFileItem(action.payload, 'filesStorageForFilter')
+      files : deleteFileItem(action.payload, state.files),
+      filesStorageForFilter : deleteFileItem(action.payload, state.filesStorageForFilter)
     };
 
   case fileActionTypes.MAKE_FOLDER :

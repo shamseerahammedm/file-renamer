@@ -16,11 +16,9 @@ export const getFileSizeToShow = (fileSize : any) => {
 
 export const getExtensionFromFileName = (fileName : any) => fileName.substring(fileName.lastIndexOf('.')+1);
 
-export const deleteFileItem = (dataSet : any, setName : any) => {
-
-  const fileId = dataSet.fileId;
-  const data = dataSet[setName];
-  const filteredData = data.filter( (fileItem : any) => fileItem.fileId !== fileId);
-  return filteredData;
+export const deleteFileItem = (fileId : any, files : Array<any>) => {
+  console.log('files', files);
+  const fileArray = files.filter((fileItem: any) => fileItem.fileId !== fileId);
+  return fileArray;
 
 };

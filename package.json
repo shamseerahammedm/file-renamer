@@ -51,52 +51,46 @@
     ],
     "rules": {
       "indent": [
-        "warn",
+        "error",
         2
       ],
       "semi": [
-        "warn",
+        "error",
         "always"
       ],
       "quotes": [
-        "warn",
+        "error",
         "single"
       ],
       "jsx-quotes": [
-        "warn",
+        "error",
         "prefer-double"
       ],
       "no-multiple-empty-lines": [
-        "warn",
+        "error",
         {
           "max": 1,
           "maxBOF": 1,
           "maxEOF": 1
         }
       ],
-      "object-curly-newline": [
-        "warn",
-        {
-          "consistent": true
-        }
-      ],
       "semi-spacing": [
-        "warn",
+        "error",
         {
           "before": false,
           "after": true
         }
       ],
       "comma-spacing": [
-        "warn",
+        "error",
         {
           "before": false,
           "after": true
         }
       ],
-      "no-var": "warn",
+      "no-var": "error",
       "object-curly-spacing": [
-        "warn",
+        "error",
         "always"
       ]
     }
@@ -117,6 +111,7 @@
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "@types/lodash": "^4.14.169",
     "@types/redux-logger": "^3.0.8",
     "@types/uuid": "^8.3.0",
     "autoprefixer": "^9.8.6",

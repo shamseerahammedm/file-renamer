@@ -86,7 +86,7 @@ const ProcessingItem: React.FC<ProcessingItemProps> = ({
           }
         </div>
 
-        <h3 style={{ color: '#26327F' }} className="processing-item font-semibold">{name}</h3>
+        <h3 style={{ color: '#26327F' }} className=" font-semibold">{name}</h3>
         <div className="processing-item__files text-xs text-gray-600">{textGenerator(numberOfFiles, isActive)}</div>
       </div>
     </div>

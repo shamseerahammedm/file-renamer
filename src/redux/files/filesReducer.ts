@@ -1,14 +1,6 @@
 import fileActionTypes from './filesTypes';
 import { deleteFileItem } from './filesUtils';
 
-// type Folder = {
-//   folderId: string,
-//   type: 'zip',
-//   files: [],
-//   name: string,
-//   numberOfFiles: number,
-// }
-
 const INITIAL_STATE = {
   files: [],
   processingSpaceFolders : [],
@@ -30,7 +22,7 @@ const filesReducer = (state = INITIAL_STATE, action : any) => {
   case fileActionTypes.SET_FILES_SUCCESS :
     return {
       ...state,
-      files : [...state.files, ...action.payload ],
+      files : action.payload,
       isLoading : false
     };
 

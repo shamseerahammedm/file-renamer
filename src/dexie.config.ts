@@ -4,7 +4,7 @@ export class dataBase extends Dexie
 {
 
   file: Dexie.Table<file, number>;
-  fileMetaDetails: Dexie.Table<fileMetaDetails, number>;
+  // fileMetaDetails: Dexie.Table<fileMetaDetails, number>;
 
   constructor(databaseName : string)
   {
@@ -16,12 +16,12 @@ export class dataBase extends Dexie
     //
     this.version(1).stores({
       file: '++fileId, name, size, extension',
-      fileMetaDetails: '++fileMetaDetailsId, imageSrcUrl'
+      // fileMetaDetails: '++fileMetaDetailsId, imageSrcUrl'
     });
 
     // The following lines are needed for it to work across typescipt using babel-preset-typescript:
     this.file = this.table('file'); 
-    this.fileMetaDetails = this.table('fileMetaDetails'); 
+    // this.fileMetaDetails = this.table('fileMetaDetails'); 
 
   }
 }
@@ -32,14 +32,10 @@ export interface file
 {
   fileId?: number; // Primary key. Optional (autoincremented)
   name: string; 
-  size: string; 
+  size: number; 
   extension: string; 
-}
-
-export interface fileMetaDetails
-{
-  fileId?: number; // Primary key. Optional (autoincremented)
-  name: string; 
-  size: string; 
-  extension: string; 
+  fileBlob: Blob; 
+  lastModified : number;
+  lastModifiedDate : Date;
+  type : string;
 }

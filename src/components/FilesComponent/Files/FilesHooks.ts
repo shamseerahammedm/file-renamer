@@ -1,3 +1,5 @@
+import { db } from 'App';
+import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
@@ -85,8 +87,22 @@ const useHandleFilter = () =>
   };
 };
 
+const useLiveFetching = () => {
+  console.log('db', db);
+  const files = useLiveQuery(
+    () => {
+      db.file.where({ name : 'err.png' }).toArray();
+    }
+  );
+
+  return {
+    files
+  };
+};
+
 export
 {
   useHandleImportFiles,
-  useHandleFilter
+  useHandleFilter,
+  useLiveFetching
 };

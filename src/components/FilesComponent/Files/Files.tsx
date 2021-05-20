@@ -4,17 +4,16 @@ import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import FileItem from '../FileItem/FileItem';
 import { deleteFileItem, updateFilesAfterFiltering } from 'redux/files/filesActions';
 import clsx from 'clsx';
-import { useHandleFilter, useHandleImportFiles } from './FilesHooks';
+import { useHandleFilter, useHandleImportFiles, useLiveFetching } from './FilesHooks';
 import CheckBoxButton from 'components/Common/CheckBoxButton/CheckBoxButton';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db } from 'App';
 
 const Files: React.FC = () =>
 {
   const dispatch = useDispatch();
-
   const { files } = useSelector((state: RootStateOrAny) => state.files);
-
-  const removeItem = (fileId: string) =>
-  {
+  const removeItem = (fileId: string) => {
     dispatch(deleteFileItem(fileId));
   };
 
@@ -23,6 +22,19 @@ const Files: React.FC = () =>
 
   // handling filter
   const { itemsPicked, uniqueFilterTags, handleChange } = useHandleFilter();
+
+  console.log('db', db);
+
+  // handle live fetching 
+  const dbFiles = useLiveQuery(
+    () => {
+      db.file
+        .where({ name : 'err.png' })
+        .toArray();
+    }
+  );
+
+  console.log('dbFiles', dbFiles);
 
   return (
 

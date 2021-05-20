@@ -43,7 +43,7 @@ export const getFileSizeToShow = (fileSize) => {
 
 export const getExtensionFromFileName = (fileName) => fileName.substring(fileName.lastIndexOf('.') + 1);
 
-export const loadXHR = (url) => {
+export const getBlob = (url) => {
   return new Promise(function (resolve, reject) {
     try
     {
@@ -88,7 +88,7 @@ export const loadXHR = (url) => {
 //       xhr.addEventListener('load', function () {
 //         if (xhr.status === 200) {
 //           console.log('Image retrieved');
-                  
+
 //           // Blob as response
 //           blob = xhr.response;
 //           console.log('Blob:' + blob);
@@ -143,7 +143,7 @@ export const loadXHR = (url) => {
 //     db.onerror = function (event) {
 //       console.log('Error creating/accessing IndexedDB database');
 //     };
-      
+
 //     // Interim solution for Google Chrome to create an objectStore. Will be deprecated
 //     if (db.setVersion) {
 //       if (db.version != dbVersion) {
@@ -161,7 +161,7 @@ export const loadXHR = (url) => {
 //       getImageFile();
 //     }
 //   };
-  
+
 //   // For future use. Currently only in latest Firefox versions
 //   request.onupgradeneeded = function (event) {
 //     createObjectStore(event.target.result);

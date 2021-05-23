@@ -8,6 +8,8 @@ interface initialStateProps {
   errorData: null,
   filesStorageForFilter: Array<any>;
   folders: Array<any>;
+  isProcessing : Boolean
+  filesToggle : Boolean
 }
 
 const INITIAL_STATE : initialStateProps = {
@@ -16,7 +18,9 @@ const INITIAL_STATE : initialStateProps = {
   isLoading: false,
   errorData: null,
   filesStorageForFilter: [],
-  folders: []
+  folders: [],
+  isProcessing : false,
+  filesToggle : false
 };
 
 const filesReducer = (state = INITIAL_STATE, action: any) => {
@@ -31,7 +35,7 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
   case fileActionTypes.SET_FILES_SUCCESS:
     return {
       ...state,
-      files: action.payload,
+      filesToggle: !state.filesToggle,
       isLoading: false
     };
 
@@ -73,6 +77,12 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
     return {
       ...state,
       folders: action.payload
+    };
+    
+  case fileActionTypes.IS_PROCESSING:
+    return {
+      ...state,
+      isProcessing: action.payload
     };
 
   default:

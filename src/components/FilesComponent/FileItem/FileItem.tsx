@@ -1,4 +1,5 @@
 import { ReactComponent as CloseIcon } from 'assets/images/icons/close.svg';
+import clsx from 'clsx';
 import { useDrag } from 'react-dnd';
 import { toast } from 'react-toastify';
 import { itemTypes } from 'utils/constants';
@@ -29,18 +30,18 @@ const FileItem : React.FC<Props> = ({
       name : filename
     },
     end: (item, monitor) => {
-      if(item.name)
+      const dropResult: any = monitor.getDropResult();
+      if(item.name && dropResult)
       {
-        const dropResult: any = monitor.getDropResult();
         const alertDiv = (
           <div className="text-black">
-            You dropped <span>{item.name}</span> into {dropResult.name} 
+            You dropped <span>{item.name}</span> into {dropResult?.name} 
           </div>
         );
         if (item && dropResult) {
           toast(alertDiv, {
             position: 'bottom-right',
-            autoClose: 900000,
+            autoClose: 2000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
@@ -69,7 +70,7 @@ const FileItem : React.FC<Props> = ({
         </div>
         <div className="ImageItemHeader">
           <div
-            className={`ImageItemImage rounded-lg rounded-bl-none rounded-br-none h-32 ${!isImage && 'flex items-center justify-center'}`}
+            className="ImageItemImage rounded-lg rounded-bl-none rounded-br-none h-32 flex items-center justify-center"
             style={{
               background: isImage ? `url(${imageSrcUrl}) center center/cover` : '#EDF2F7'
             }}

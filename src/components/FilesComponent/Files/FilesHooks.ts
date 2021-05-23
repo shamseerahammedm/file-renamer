@@ -1,15 +1,17 @@
+
 import { db } from 'App';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
-import { setFilesAsync, updateFilesAfterFiltering } from 'redux/files/filesActions';
+import { fetchFilesAsync, isProcessing, setFilesAsync, updateFilesAfterFiltering } from 'redux/files/filesActions';
 
-const useHandleImportFiles = () =>
-{
+/* 
+  For handling import 
+*/
+const useHandleImportFiles = () => {
   const dispatch = useDispatch();
-
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: [NativeTypes.FILE],
     item: {
@@ -32,8 +34,10 @@ const useHandleImportFiles = () =>
   };
 };
 
-const useHandleFilter = () =>
-{
+/* 
+  For handling filter
+*/
+const useHandleFilter = () => {
   const dispatch = useDispatch();
   const { filesStorageForFilter } = useSelector((state: RootStateOrAny) => state.files);
 
@@ -87,21 +91,30 @@ const useHandleFilter = () =>
   };
 };
 
-const useLiveFetching = () => {
-  console.log('db', db);
-  const files = useLiveQuery(
-    () => {
-      db.file.where({ name : 'err.png' }).toArray();
-    }
-  );
+/* 
+  Custom function for handling live fetching of data
+*/
 
+const useLiveFetching = () => {
+  const dispatch = useDispatch();
+  const { filesToggle, filesFetched } = useSelector((state: RootStateOrAny) => state.files);
+  const dbFiles = useLiveQuery(async () => {
+    dispatch(isProcessing(true));
+    const files = await db.file.toArray();
+    dispatch(isProcessing(false));
+    return files;
+  }, []);
+
+  // useEffect(()=>{
+  //   dispatch(fetchFilesAsync());
+  // }, [filesToggle]);
+  // console.log('filesFetched', filesFetched);
   return {
-    files
+    dbFiles
   };
 };
 
-export
-{
+export {
   useHandleImportFiles,
   useHandleFilter,
   useLiveFetching

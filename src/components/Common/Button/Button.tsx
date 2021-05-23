@@ -8,11 +8,10 @@ interface Props {
 }
 
 const Button : React.FC<Props> = ({ children, style, className, ...otherProps }) =>{
-  const classNames = clsx('asd', `${className}`);
   return (
     <button 
       style={style} 
-      className={classNames}
+      className={clsx('customButton', `${className}`)}
       {...otherProps} 
     >
       {children}

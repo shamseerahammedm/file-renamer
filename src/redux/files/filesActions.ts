@@ -5,7 +5,7 @@ import { db } from 'App';
 
 export const setFilesAsync = (fileData: any) =>
 {
-  return async (dispatch: any, getState: any) =>
+  return async (dispatch: any) =>
   {
     dispatch(handleActionStart(fileActionTypes.SET_FILES_START));
     try
@@ -20,20 +20,30 @@ export const setFilesAsync = (fileData: any) =>
           isImage : isImage
         };
       });
-
       await db.transaction('rw', db.file, async () =>
       {
         db.file.bulkAdd(fileDetails);
       });
-
       dispatch(handleNonAPIActionSuccess(fileActionTypes.SET_FILES_SUCCESS, true));
-      // const { files: { files } } = getState();
-      // // setting storage filter with state data for filtering purposes
-      // dispatch(setFilesStorageFilter(files));
     }
     catch (err)
     {
       dispatch(handleNonAPIActionFailure(fileActionTypes.SET_FILES_FAILURE, err));
+    }
+  };
+};
+
+export const fetchFilesAsync = () => {
+  return async (dispatch : any) => {
+    try
+    {
+      dispatch(handleActionStart(fileActionTypes.FETCH_FILES_START));
+      const files = await db.file.toArray();
+      dispatch(handleNonAPIActionSuccess(fileActionTypes.FETCH_FILES_SUCCESS, files));
+    }
+    catch(err)
+    {
+      dispatch(handleNonAPIActionFailure(fileActionTypes.SET_FILES_FAILURE));
     }
   };
 };
@@ -62,3 +72,7 @@ export const makeFolders = (folderData: Array<any>) => ({
   payload: folderData
 });
 
+export const isProcessing = (payload : Boolean) => ({
+  type : fileActionTypes.IS_PROCESSING,
+  payload : payload
+});

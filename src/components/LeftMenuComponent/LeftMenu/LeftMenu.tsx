@@ -1,33 +1,28 @@
 import Logo from '../../Logo/Logo';
 import LeftMenuItems from '../LeftMenuItems/LeftMenuItems';
 import DotLoader from 'components/Common/DotLoader/DotLoader';
-// import { connect } from 'react-redux';
-// import { createStructuredSelector } from 'reselect';
-// import { selectIsLoading } from '../../redux/files/files.selectors';
+import { useSelector, RootStateOrAny } from 'react-redux';
+import'./LeftMenu.scss';
 
 const LeftMenu = ({ ...otherProps }) => {
+  const { isProcessing } = useSelector((state: RootStateOrAny) => state.files);
   return (
-    <div className="w-full sm:w-1/12 left-menu " {...otherProps}>
-      <div className="left-menu__wrapper md:mr-3 lg:mr-10 flex flex-col items-center justify-between  h-full" style={{ background : '#5864FF' }}>
-        <div className="left-menu__upper">
+    <div className="leftMenu" {...otherProps}  style={{ background : '#5864FF' }}>
+      <div className="leftMenuWrapper flex flex-col items-center justify-between h-screen fixed left-0 right-0 bottom-0 top-0" >
+        <div className="leftMenuUpper">
           <Logo/>
           <LeftMenuItems/>
         </div>
-        <div className="left-menu__lower pb-4">
-          <DotLoader className="loader-wrapper"/>
-          {/* {
-            isLoading && <DotLoader className="loader-wrapper"/>
-          } */}
+        <div className="leftMenuLower pb-4">
+          {
+            true
+            &&
+            <DotLoader className="loader-wrapper"/>
+          }
         </div>
       </div>
     </div>
   );
 };
-
-// const mapStateToProps = createStructuredSelector({
-//   isLoading : selectIsLoading
-// });
-
-// export default connect(mapStateToProps)(LeftMenu);
 
 export default LeftMenu;

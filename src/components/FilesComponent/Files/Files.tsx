@@ -3,9 +3,9 @@ import { memo } from 'react';
 import { useSelector, RootStateOrAny } from 'react-redux';
 import FileItem from '../FileItem/FileItem';
 import clsx from 'clsx';
-import { useHandleFilter, useHandleImportFiles } from './FilesHooks';
+import { useHandleFilter, useHandleImportFiles, useLiveFetching } from './FilesHooks';
 import CheckBoxButton from 'components/Common/CheckBoxButton/CheckBoxButton';
-import { useLiveQuery } from 'dexie-react-hooks';
+
 import { db } from 'App';
 import { getFileSizeToShow } from 'utils/utils';
 
@@ -20,11 +20,8 @@ const Files: React.FC = () => {
   const { itemsPicked, uniqueFilterTags, handleChange } = useHandleFilter();
 
   // handle live fetching 
-  const dbFiles = useLiveQuery(() => {
-    return db.file.toArray();
-  }, []);
-
-  console.log('dbFiles', dbFiles);
+  
+  const { dbFiles } =  useLiveFetching();
 
   return (
 
@@ -47,44 +44,36 @@ const Files: React.FC = () => {
           <div className="w-full sm:w-4/12 flex items-center justify-end">
           </div>
         </div>
-
-        <div className="files__content flex flex-wrap">
+        <div className="files__content flex ">
           <div className={clsx(
-            'w-full sm:w-9/12 flex flex-wrap',
-            !(files && files.length > 0) && 'items-center justify-center'
+            'w-full sm:w-9/12 flex flex-wrap justify-center',
+            !(files && files.length > 0) && 'items-center'
           )}>
-
             {
               dbFiles && dbFiles.length > 0
                 ?
-                <>
-                  {
-                    dbFiles.map((item: any, i: number) => {
-                      return (
-                        <FileItem
-                          fileId={item.fileId}
-                          fileExtension={item.extension}
-                          imageSrcUrl={item.imageSrcUrl}
-                          filename={item.fileBlob.name}
-                          fileSizeToShow={getFileSizeToShow(item.fileBlob.size)}
-                          removeItem={removeItem}
-                          key={item.fileId}
-                          isImage={item.isImage}
-                        />
-                      );
-                    })
-                  }
-                </>
+                dbFiles.map((item: any, i: number) => {
+                  return (
+                    <FileItem
+                      fileId={item.fileId}
+                      fileExtension={item.extension}
+                      imageSrcUrl={URL.createObjectURL(item.fileBlob)}
+                      filename={item.fileBlob.name}
+                      fileSizeToShow={getFileSizeToShow(item.fileBlob.size)}
+                      removeItem={removeItem}
+                      key={item.fileId}
+                      isImage={item.isImage}
+                    />
+                  );
+                })
                 :
                 <p className="text-center text-gray-500 text-sm">No files added</p>
             }
-
           </div>
-          <div className="w-full sm:w-3/12 p-2">
-
-            <div className="dragAndDropArea" ref={ref}>
-              <div className="drop-area bg-white w-full h-full rounded-md border border-dashed border-gray-500 flex items-center justify-center">
-                <div className="drop-area__wrapper py-3">
+          <div className="w-full sm:w-3/12 m-2 border border-dashed border-gray-500 rounded-md flex items-center justify-center " ref={ref}>
+            <div className="dragAndDropArea">
+              <div className="drop-area bg-white w-full ">
+                <div className="drop-area__wrapper py-3 h-full w-full px-2">
                   <span className="flex mx-auto justify-center">
                     <EmptyDropZoneIcon className="h-auto w-8 object-cover" />
                   </span>

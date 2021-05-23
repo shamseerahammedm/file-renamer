@@ -11,12 +11,9 @@ import { v4 as uuidv4 } from 'uuid';
 const ProcessingSpace: React.FC = () =>
 {
   const dispatch = useDispatch();
-
   const { folders } = useSelector((state: RootStateOrAny) => state.files);
   const isProcessingSpaceEmpty = folders.length === 0;
-
-  const createFolderHandler = () =>
-  {
+  const createFolderHandler = () => {
     const currentFolderList = [...folders];
     const folderDetails = { folderId: uuidv4(), type: 'zip', files: [], name: 'Default Zip FolderName', numberOfFiles: 0 };
     currentFolderList.push(folderDetails);

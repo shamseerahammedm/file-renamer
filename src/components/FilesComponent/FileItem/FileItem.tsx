@@ -10,6 +10,7 @@ interface Props {
   imageSrcUrl : string,
   filename : string,
   fileSizeToShow : string,
+  isImage : Boolean
 }
 
 const FileItem : React.FC<Props> = ({
@@ -18,10 +19,9 @@ const FileItem : React.FC<Props> = ({
   fileExtension,
   imageSrcUrl,
   filename,
-  fileSizeToShow
+  fileSizeToShow,
+  isImage
 }) => {
-
-  const isImage = (fileExtension === 'jpg' || fileExtension === 'jpeg' ) || fileExtension === 'png' || fileExtension === 'svg' ? true : false;
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: itemTypes.DROPPED_FILE,

@@ -1,6 +1,6 @@
-import { handleActionStart, handleNonAPIActionFailure, handleNonAPIActionSuccess, getBlob } from 'utils/utils';
+import { handleActionStart, handleNonAPIActionFailure, handleNonAPIActionSuccess, getExtensionFromFileName } from 'utils/utils';
 import fileActionTypes from './filesTypes';
-import { readURL, getFileSizeToShow, getExtensionFromFileName } from '../../utils/utils';
+import { isItemImage } from './filesUtils';
 import { db } from 'App';
 
 export const setFilesAsync = (fileData: any) =>
@@ -10,16 +10,14 @@ export const setFilesAsync = (fileData: any) =>
     dispatch(handleActionStart(fileActionTypes.SET_FILES_START));
     try
     {
-
       const fileDetails = fileData.map((fileItem: any) => {
+        const fileExtension = getExtensionFromFileName(fileItem.name);
+        const isImage = isItemImage(fileExtension);
         return {
-          name : fileItem.name,
-          size : fileItem.size,
-          extension : getExtensionFromFileName(fileItem.name),
-          fileBlob : 1234,
-          lastModified : fileItem.lastModified,
-          lastModifiedDate :fileItem.lastModifiedDate,
-          type : fileItem.type
+          extension : fileExtension,
+          fileBlob : fileItem,
+          imageSrcUrl : isImage ? URL.createObjectURL(fileItem) : null,
+          isImage : isImage
         };
       });
 

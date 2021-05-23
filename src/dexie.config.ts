@@ -15,7 +15,7 @@ export class dataBase extends Dexie
     // (Here's where the implicit table props are dynamically created)
     //
     this.version(1).stores({
-      file: '++fileId, name, size, extension',
+      file: '++fileId, extension, fileBlob',
       // fileMetaDetails: '++fileMetaDetailsId, imageSrcUrl'
     });
 
@@ -31,11 +31,8 @@ export class dataBase extends Dexie
 export interface file
 {
   fileId?: number; // Primary key. Optional (autoincremented)
-  name: string; 
-  size: number; 
   extension: string; 
   fileBlob: Blob; 
-  lastModified : number;
-  lastModifiedDate : Date;
-  type : string;
+  imageSrcUrl : string; 
+  isImage : Boolean;
 }

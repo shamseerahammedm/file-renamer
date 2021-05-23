@@ -1,21 +1,17 @@
 import { ReactComponent as EmptyDropZoneIcon } from 'assets/images/icons/storage-box.svg';
 import { memo } from 'react';
-import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
+import { useSelector, RootStateOrAny } from 'react-redux';
 import FileItem from '../FileItem/FileItem';
-import { deleteFileItem, updateFilesAfterFiltering } from 'redux/files/filesActions';
 import clsx from 'clsx';
-import { useHandleFilter, useHandleImportFiles, useLiveFetching } from './FilesHooks';
+import { useHandleFilter, useHandleImportFiles } from './FilesHooks';
 import CheckBoxButton from 'components/Common/CheckBoxButton/CheckBoxButton';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from 'App';
+import { getFileSizeToShow } from 'utils/utils';
 
-const Files: React.FC = () =>
-{
-  const dispatch = useDispatch();
+const Files: React.FC = () => {
   const { files } = useSelector((state: RootStateOrAny) => state.files);
-  const removeItem = (fileId: string) => {
-    dispatch(deleteFileItem(fileId));
-  };
+  const removeItem = (fileId: any) => db.file.delete(fileId);
 
   // handle import files from PC
   const { ref, isActive } = useHandleImportFiles();
@@ -23,16 +19,10 @@ const Files: React.FC = () =>
   // handling filter
   const { itemsPicked, uniqueFilterTags, handleChange } = useHandleFilter();
 
-  console.log('db', db);
-
   // handle live fetching 
-  const dbFiles = useLiveQuery(
-    () => {
-      db.file
-        .where({ name : 'err.png' })
-        .toArray();
-    }
-  );
+  const dbFiles = useLiveQuery(() => {
+    return db.file.toArray();
+  }, []);
 
   console.log('dbFiles', dbFiles);
 
@@ -65,21 +55,21 @@ const Files: React.FC = () =>
           )}>
 
             {
-              files && files.length > 0
+              dbFiles && dbFiles.length > 0
                 ?
                 <>
                   {
-                    files.map((item: any, i: number) =>
-                    {
+                    dbFiles.map((item: any, i: number) => {
                       return (
                         <FileItem
                           fileId={item.fileId}
-                          fileExtension={item.fileExtension}
+                          fileExtension={item.extension}
                           imageSrcUrl={item.imageSrcUrl}
-                          filename={item.name}
-                          fileSizeToShow={item.fileSizeToShow}
+                          filename={item.fileBlob.name}
+                          fileSizeToShow={getFileSizeToShow(item.fileBlob.size)}
                           removeItem={removeItem}
-                          key={i}
+                          key={item.fileId}
+                          isImage={item.isImage}
                         />
                       );
                     })
@@ -105,12 +95,10 @@ const Files: React.FC = () =>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-
   );
 };
 

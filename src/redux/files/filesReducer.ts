@@ -1,74 +1,83 @@
 import fileActionTypes from './filesTypes';
 import { deleteFileItem } from './filesUtils';
 
-const INITIAL_STATE = {
+interface initialStateProps {
+  files: Array<any>;
+  processingSpaceFolders: Array<any>;
+  isLoading: Boolean,
+  errorData: null,
+  filesStorageForFilter: Array<any>;
+  folders: Array<any>;
+}
+
+const INITIAL_STATE : initialStateProps = {
   files: [],
-  processingSpaceFolders : [],
-  isLoading : false,
-  errorData : null,
-  filesStorageForFilter : [],
-  folders : []
+  processingSpaceFolders: [],
+  isLoading: false,
+  errorData: null,
+  filesStorageForFilter: [],
+  folders: []
 };
 
-const filesReducer = (state = INITIAL_STATE, action : any) => {
+const filesReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
 
-  case fileActionTypes.SET_FILES_START :
+  case fileActionTypes.SET_FILES_START:
     return {
       ...state,
-      isLoading : true
+      isLoading: true
     };
 
-  case fileActionTypes.SET_FILES_SUCCESS :
+  case fileActionTypes.SET_FILES_SUCCESS:
     return {
       ...state,
-      files : action.payload,
-      isLoading : false
+      files: action.payload,
+      isLoading: false
     };
 
-  case fileActionTypes.SET_FILES_FAILURE :
+  case fileActionTypes.SET_FILES_FAILURE:
     return {
       ...state,
-      isLoading : false,
-      errorData : action.payload
+      isLoading: false,
+      errorData: action.payload
     };
 
     // filter by tags are working based on this 
-  case fileActionTypes.SET_FILES_STORAGE_FILTER :
+  case fileActionTypes.SET_FILES_STORAGE_FILTER:
     return {
       ...state,
-      filesStorageForFilter : [ ...action.payload],
-    };
-        
-  case fileActionTypes.UPDATE_FILES_AFTER_FILTERING :
-    return {
-      ...state,
-      files : [...action.payload],
-    };
-    
-  case fileActionTypes.CLEAR_FILES :
-    return {
-      ...state,
-      files : [],
-      filesStorageForFilter : []
+      filesStorageForFilter: [...action.payload],
     };
 
-  case fileActionTypes.REMOVE_FILE_ITEM :
+  case fileActionTypes.UPDATE_FILES_AFTER_FILTERING:
     return {
       ...state,
-      files : deleteFileItem(action.payload, state.files),
-      filesStorageForFilter : deleteFileItem(action.payload, state.filesStorageForFilter)
+      files: [...action.payload],
     };
 
-  case fileActionTypes.MAKE_FOLDER :
+  case fileActionTypes.CLEAR_FILES:
     return {
       ...state,
-      folders : action.payload
+      files: [],
+      filesStorageForFilter: []
+    };
+
+  case fileActionTypes.REMOVE_FILE_ITEM:
+    return {
+      ...state,
+      files: deleteFileItem(action.payload, state.files),
+      filesStorageForFilter: deleteFileItem(action.payload, state.filesStorageForFilter)
+    };
+
+  case fileActionTypes.MAKE_FOLDER:
+    return {
+      ...state,
+      folders: action.payload
     };
 
   default:
     return state;
-            
+
   }
 };
 

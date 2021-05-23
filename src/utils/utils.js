@@ -34,6 +34,9 @@ export const readURL = (file) => {
   });
 };
 
+/* 
+  Utility function for getting formatted file size in MB,GB etc..
+*/
 export const getFileSizeToShow = (fileSize) => {
   const fileTypeArrays = ['Bytes', 'KB', 'MB', 'GB'];
   let i = 0; while (fileSize > 900) { fileSize /= 1024; i++; }
@@ -41,8 +44,14 @@ export const getFileSizeToShow = (fileSize) => {
   return exactSize;
 };
 
+/* 
+  Utility function for grabbing file extension from file name
+*/
 export const getExtensionFromFileName = (fileName) => fileName.substring(fileName.lastIndexOf('.') + 1);
 
+/* 
+  Utility function to get blob of a url
+*/
 export const getBlob = (url) => {
   return new Promise(function (resolve, reject) {
     try

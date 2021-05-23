@@ -70,8 +70,7 @@ const useHandleFilter = () => {
   };
 
   // do filter and show files when filter array changes
-  useEffect(() =>
-  {
+  useEffect(() => {
     let items;
     if (itemsPicked.includes('all'))
     {
@@ -96,8 +95,9 @@ const useHandleFilter = () => {
 */
 
 const useLiveFetching = () => {
+  console.log('here',);
   const dispatch = useDispatch();
-  const { filesToggle, filesFetched } = useSelector((state: RootStateOrAny) => state.files);
+  // const { filesToggle, filesFetched } = useSelector((state: RootStateOrAny) => state.files);
   const dbFiles = useLiveQuery(async () => {
     dispatch(isProcessing(true));
     const files = await db.file.toArray();

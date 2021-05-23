@@ -5,46 +5,41 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { makeFolders } from 'redux/files/filesActions';
 import { useDrop } from 'react-dnd';
 import { itemTypes } from 'utils/constants';
+import { toast } from 'react-toastify';
 
-const textGenerator = (numberOfFiles: number, isActive: boolean) =>
-{
-  if (isActive)
-  {
+const textGenerator = (numberOfFiles: number, isActive: boolean) => {
+  if (isActive) {
     return 'Drop here';
   }
-  else
-  {
-    if (numberOfFiles > 0)
-    {
+  else {
+    if (numberOfFiles > 0) {
       return `${numberOfFiles} Files`;
     }
-    else
-    {
+    else {
       return 'Empty';
     }
   }
 };
 
-interface ProcessingItemProps
-{
+interface Props {
   type: string;
   name: string;
   numberOfFiles: number;
   folderId: string;
 }
 
-const ProcessingItem: React.FC<ProcessingItemProps> = ({
+const Folder: React.FC<Props> = ({
   type,
   name,
   numberOfFiles,
   folderId,
-}) =>
-{
+}) => {
   const dispatch = useDispatch();
+  const { folders } = useSelector((state: RootStateOrAny) => state.files);
   
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: itemTypes.DROPPED_FILE,
-    drop: () => ({ name: name }),
+    drop: (item: any) => dropHandler(item),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -52,7 +47,6 @@ const ProcessingItem: React.FC<ProcessingItemProps> = ({
   }));
   const isActive = canDrop && isOver;
 
-  const { folders } = useSelector((state: RootStateOrAny) => state.files);
   const removeFolderHandler = (folderId: string) => {
     const newFoldersArray = folders.filter((folderItem: {
       folderId: string
@@ -60,14 +54,31 @@ const ProcessingItem: React.FC<ProcessingItemProps> = ({
     dispatch(makeFolders(newFoldersArray));
   };
 
+  const dropHandler = (item : any) => {
+    if (item) {
+      const alertDiv = (
+        <div className="text-black">
+          You dropped <span>{item.name}</span> into {name}
+        </div>
+      );
+      toast(alertDiv, {
+        position: 'bottom-right',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
   return (
     <div
-      className="processing-item w-full p-2"
+      className="Folder w-full p-2"
       ref={drop}
     >
       <div
         style={{ background: isActive ? 'rgb(197 221 255)' : '#EBF2FC' }}
-        className="processing-item__wrapper rounded-lg px-4 py-5 relative"
+        className="FolderWrapper rounded-lg px-4 py-5 relative"
       >
         <div
           onClick={() => removeFolderHandler(folderId)}
@@ -76,7 +87,7 @@ const ProcessingItem: React.FC<ProcessingItemProps> = ({
         >
           <CloseIcon className="w-2 h-2" />
         </div>
-        <div className="processing-item__icon">
+        <div className="FolderIcon">
           {
             type === 'zip'
               ?
@@ -87,10 +98,10 @@ const ProcessingItem: React.FC<ProcessingItemProps> = ({
         </div>
 
         <h3 style={{ color: '#26327F' }} className=" font-semibold">{name}</h3>
-        <div className="processing-item__files text-xs text-gray-600">{textGenerator(numberOfFiles, isActive)}</div>
+        <div className="FolderFiles text-xs text-gray-600">{textGenerator(numberOfFiles, isActive)}</div>
       </div>
     </div>
   );
 };
 
-export default ProcessingItem;
+export default Folder;

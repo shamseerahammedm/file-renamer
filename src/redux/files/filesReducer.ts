@@ -35,7 +35,7 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
   case fileActionTypes.SET_FILES_SUCCESS:
     return {
       ...state,
-      filesToggle: !state.filesToggle,
+      // filesToggle: !state.filesToggle,
       isLoading: false
     };
 
@@ -73,11 +73,11 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
       filesStorageForFilter: deleteFileItem(action.payload, state.filesStorageForFilter)
     };
 
-  case fileActionTypes.MAKE_FOLDER:
-    return {
-      ...state,
-      folders: action.payload
-    };
+    // case fileActionTypes.MAKE_FOLDER:
+    //   return {
+    //     ...state,
+    //     folders: action.payload
+    //   };
     
   case fileActionTypes.IS_PROCESSING:
     return {

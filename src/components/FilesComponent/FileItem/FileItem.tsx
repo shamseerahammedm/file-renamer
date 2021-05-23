@@ -1,7 +1,5 @@
 import { ReactComponent as CloseIcon } from 'assets/images/icons/close.svg';
-import clsx from 'clsx';
 import { useDrag } from 'react-dnd';
-import { toast } from 'react-toastify';
 import { itemTypes } from 'utils/constants';
 
 interface Props {
@@ -28,28 +26,6 @@ const FileItem : React.FC<Props> = ({
     type: itemTypes.DROPPED_FILE,
     item: {
       name : filename
-    },
-    end: (item, monitor) => {
-      const dropResult: any = monitor.getDropResult();
-      if(item.name && dropResult)
-      {
-        const alertDiv = (
-          <div className="text-black">
-            You dropped <span>{item.name}</span> into {dropResult?.name} 
-          </div>
-        );
-        if (item && dropResult) {
-          toast(alertDiv, {
-            position: 'bottom-right',
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
-        }
-      }
-      
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),

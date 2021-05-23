@@ -15,7 +15,7 @@ const LeftMenu = ({ ...otherProps }) => {
         </div>
         <div className="leftMenuLower pb-4">
           {
-            true
+            isProcessing
             &&
             <DotLoader className="loader-wrapper"/>
           }

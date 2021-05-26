@@ -26,20 +26,20 @@ const INITIAL_STATE : initialStateProps = {
 const filesReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
 
-  case fileActionTypes.SET_FILES_START:
+  case fileActionTypes.IMPORT_FILES_START:
     return {
       ...state,
       isLoading: true
     };
 
-  case fileActionTypes.SET_FILES_SUCCESS:
+  case fileActionTypes.IMPORT_FILES_SUCCESS:
     return {
       ...state,
       // filesToggle: !state.filesToggle,
       isLoading: false
     };
 
-  case fileActionTypes.SET_FILES_FAILURE:
+  case fileActionTypes.IMPORT_FILES_FAILURE:
     return {
       ...state,
       isLoading: false,
@@ -51,12 +51,6 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
     return {
       ...state,
       filesStorageForFilter: [...action.payload],
-    };
-
-  case fileActionTypes.UPDATE_FILES_AFTER_FILTERING:
-    return {
-      ...state,
-      files: [...action.payload],
     };
 
   case fileActionTypes.CLEAR_FILES:
@@ -73,16 +67,33 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
       filesStorageForFilter: deleteFileItem(action.payload, state.filesStorageForFilter)
     };
 
-    // case fileActionTypes.MAKE_FOLDER:
-    //   return {
-    //     ...state,
-    //     folders: action.payload
-    //   };
+  case fileActionTypes.SET_FILES:
+    return {
+      ...state,
+      files : action.payload
+    };
     
   case fileActionTypes.IS_PROCESSING:
     return {
       ...state,
       isProcessing: action.payload
+    };
+
+  case fileActionTypes.FETCH_FILTERED_FILES_START:
+    return {
+      ...state,
+      isProcessing: true,
+    };
+  case fileActionTypes.FETCH_FILTERED_FILES_SUCCESS:
+    return {
+      ...state,
+      isProcessing: false,
+      files : action.payload
+    };
+  case fileActionTypes.FETCH_FILTERED_FILES_FAILURE:
+    return {
+      ...state,
+      isProcessing: false,
     };
 
   default:

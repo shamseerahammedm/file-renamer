@@ -2,7 +2,7 @@
 import {  useDrop } from 'react-dnd';
 
 import { useDispatch } from 'react-redux';
-import { setFilesAsync } from 'redux/files/filesActions';
+import { importFilesAsync } from 'redux/files/filesActions';
 
 interface Props{
   children? : any,

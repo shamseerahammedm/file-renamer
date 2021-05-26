@@ -11,15 +11,12 @@ const Filter = () => {
         {uniqueFilterTags.map((tagItem: any) => (
           <CheckBoxButton
             handleChange={handleChange}
-            value={tagItem.fileExtension}
-            label={tagItem.fileExtension}
+            value={tagItem.extension}
+            label={tagItem.extension}
             key={tagItem.fileId}
             itemsPicked={itemsPicked}
           />
         ))}
-      </div>
-      <div className="w-full sm:w-4/12 flex items-center justify-end">
-        x
       </div>
     </div>
   );

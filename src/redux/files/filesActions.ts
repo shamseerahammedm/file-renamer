@@ -4,9 +4,9 @@ import { isItemImage } from './filesUtils';
 import { db } from 'App';
 import { folder } from 'utils/modals';
 
-export const setFilesAsync = (fileData: any) => {
+export const importFilesAsync = (fileData: any) => {
   return async (dispatch: any) => {
-    dispatch(handleActionStart(fileActionTypes.SET_FILES_START));
+    dispatch(handleActionStart(fileActionTypes.IMPORT_FILES_START));
     try {
       const fileDetails = fileData.map((fileItem: any) => {
         const fileExtension = getExtensionFromFileName(fileItem.name);
@@ -21,10 +21,10 @@ export const setFilesAsync = (fileData: any) => {
       await db.transaction('rw', db.file, async () => {
         db.file.bulkAdd(fileDetails);
       });
-      dispatch(handleNonAPIActionSuccess(fileActionTypes.SET_FILES_SUCCESS, true));
+      dispatch(handleNonAPIActionSuccess(fileActionTypes.IMPORT_FILES_SUCCESS, true));
     }
     catch (err) {
-      dispatch(handleNonAPIActionFailure(fileActionTypes.SET_FILES_FAILURE, err));
+      dispatch(handleNonAPIActionFailure(fileActionTypes.IMPORT_FILES_FAILURE, err));
     }
   };
 };
@@ -37,10 +37,11 @@ export const fetchFilesAsync = () => {
       dispatch(handleNonAPIActionSuccess(fileActionTypes.FETCH_FILES_SUCCESS, files));
     }
     catch (err) {
-      dispatch(handleNonAPIActionFailure(fileActionTypes.SET_FILES_FAILURE));
+      dispatch(handleNonAPIActionFailure(fileActionTypes.IMPORT_FILES_FAILURE));
     }
   };
 };
+
 // numberOfFiles, files, folderName, folderType
 export const makeFolders = (folderData : folder) => {
   return async (dispatch: any) => {
@@ -55,13 +56,22 @@ export const makeFolders = (folderData : folder) => {
   };
 };
 
+export const fetchFilteredFilesAsync = (filterArray:string[]) => {
+  return async (dispatch: any) => {
+    try {
+      dispatch(handleActionStart(fileActionTypes.FETCH_FILTERED_FILES_START));
+      const filteredFilesPromise = db.file.filter((value : any) => filterArray.includes(value.extension));
+      const filteredFiles = await filteredFilesPromise.toArray();
+      dispatch(handleNonAPIActionSuccess(fileActionTypes.FETCH_FILTERED_FILES_SUCCESS, filteredFiles));
+    }
+    catch (err) {
+      dispatch(handleNonAPIActionFailure(fileActionTypes.FETCH_FILTERED_FILES_FAILURE));
+    }
+  };
+};
+
 export const clearFiles = () => ({
   type: fileActionTypes.CLEAR_FILES
-});
-
-export const updateFilesAfterFiltering = (files: Array<any>) => ({
-  type: fileActionTypes.UPDATE_FILES_AFTER_FILTERING,
-  payload: files
 });
 
 export const setFilesStorageFilter = (files: Array<any>) => ({
@@ -78,3 +88,9 @@ export const isProcessing = (payload: Boolean) => ({
   type: fileActionTypes.IS_PROCESSING,
   payload: payload
 });
+
+export const setFiles = (payload: Array<any>) => ({
+  type: fileActionTypes.SET_FILES,
+  payload: payload
+});
+

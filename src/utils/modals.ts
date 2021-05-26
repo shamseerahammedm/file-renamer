@@ -5,7 +5,7 @@
 export interface folder {
   folderId: string;
   type: string
-  files: Array<any>,
+  files: Array<any>
   name: string
   numberOfFiles: number
 }

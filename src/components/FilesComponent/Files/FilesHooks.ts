@@ -1,5 +1,7 @@
 import { db } from 'App';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { file } from 'dexie.config';
+import { findIndex } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
@@ -37,26 +39,7 @@ const useHandleImportFiles = () => {
 */
 const useHandleFilter = () => {
   const dispatch = useDispatch();
-  const { files } = useSelector((state: RootStateOrAny) => state.files);
-
-  // minimized file array with out blob
-  const newMinimizedFileArray = files.map((fileItem: any) => {
-    return {
-      fileId: fileItem.fileId,
-      extension : fileItem.extension,
-    };
-  });
-
-  // filter checkbox buttons data
-  const uniqueFilterTags = newMinimizedFileArray.filter((fileItem: any, index: number, self: Array<any>) => {
-    return index === self.findIndex(item => {
-      return item.extension.toLowerCase() === fileItem.extension.toLowerCase();
-    });
-  });
-  uniqueFilterTags.push({
-    fileId: 'all',
-    extension: 'all'
-  });
+  const { files, filterOptions } = useSelector((state: RootStateOrAny) => state.files);
 
   // handling change event of filter checkbox buttons
   const [itemsPicked, setItemsPicked] = useState<Array<string>>(['all']);
@@ -77,7 +60,7 @@ const useHandleFilter = () => {
 
   return {
     itemsPicked,
-    uniqueFilterTags,
+    filterOptions,
     handleChange,
   };
 };
@@ -85,7 +68,6 @@ const useHandleFilter = () => {
 /* 
   Custom function for handling live fetching of data
 */
-
 const useLiveFetching = () => {
   const dispatch = useDispatch();
 
@@ -102,8 +84,34 @@ const useLiveFetching = () => {
   };
 };
 
+/* 
+  Hook for getting filters
+*/
+const useGetFilters = () => {
+  const [isFilterLoading, setIsFilterLoading] = useState<Boolean>(false);
+
+  const filterOptions = useLiveQuery(async () => {
+    setIsFilterLoading(true);
+    const filesArray = await db.file.toArray();
+    const filterOptionsData = filesArray.filter((fileItem : file, index : number, currentArray : Array<any>) => {
+      return index === currentArray.findIndex(( currentItem => {
+        return fileItem.extension.toLocaleLowerCase() === currentItem.extension.toLocaleLowerCase();
+      }));
+    });
+    console.log('filterOptionsData', filterOptionsData);
+    setIsFilterLoading(false);
+    return filterOptionsData;
+  }, []);
+
+  return {
+    isFilterLoading,
+    filterOptions
+  };
+};
+
 export {
   useHandleImportFiles,
   useHandleFilter,
-  useLiveFetching
+  useLiveFetching,
+  useGetFilters
 };

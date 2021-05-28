@@ -10,3 +10,22 @@ export const isItemImage = (fileExtension : string) => {
   const isImage = allowedImageTypes.includes(fileExtensionLowerCased);
   return isImage;
 };
+
+export const getFilterOptions = (files : any[]) => {
+  const rawFileOptions = files.map(fileItem => {
+    return {
+      extension : fileItem.extension,
+      fileId : fileItem.fileId
+    };
+  });
+  const duplicateItemsRemovedArray = rawFileOptions.filter((filterOption, index, currentArray) => {
+    return index === currentArray.findIndex( currentArrayFileItem => {
+      return currentArrayFileItem.extension.toLowerCase() === filterOption.extension.toLowerCase();
+    });
+  });
+  const fileOptions = [...duplicateItemsRemovedArray, {
+    fileId: 'all',
+    extension: 'all'
+  }];
+  return fileOptions;
+};  

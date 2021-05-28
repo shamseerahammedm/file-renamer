@@ -1,12 +1,12 @@
 import fileActionTypes from './filesTypes';
-import { deleteFileItem } from './filesUtils';
+import { deleteFileItem, getFilterOptions } from './filesUtils';
 
 interface initialStateProps {
   files: Array<any>;
   processingSpaceFolders: Array<any>;
   isLoading: Boolean,
   errorData: null,
-  filesStorageForFilter: Array<any>;
+  filterOptions: Array<any>;
   folders: Array<any>;
   isProcessing : Boolean
   filesToggle : Boolean
@@ -17,7 +17,7 @@ const INITIAL_STATE : initialStateProps = {
   processingSpaceFolders: [],
   isLoading: false,
   errorData: null,
-  filesStorageForFilter: [],
+  filterOptions: [],
   folders: [],
   isProcessing : false,
   filesToggle : false
@@ -46,13 +46,6 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
       errorData: action.payload
     };
 
-    // filter by tags are working based on this 
-  case fileActionTypes.SET_FILES_STORAGE_FILTER:
-    return {
-      ...state,
-      filesStorageForFilter: [...action.payload],
-    };
-
   case fileActionTypes.CLEAR_FILES:
     return {
       ...state,
@@ -64,13 +57,14 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
     return {
       ...state,
       files: deleteFileItem(action.payload, state.files),
-      filesStorageForFilter: deleteFileItem(action.payload, state.filesStorageForFilter)
+      filterOptions: deleteFileItem(action.payload, state.filterOptions)
     };
 
   case fileActionTypes.SET_FILES:
     return {
       ...state,
-      files : action.payload
+      files : action.payload,
+      filterOptions: getFilterOptions(action.payload),
     };
     
   case fileActionTypes.IS_PROCESSING:
@@ -98,7 +92,6 @@ const filesReducer = (state = INITIAL_STATE, action: any) => {
 
   default:
     return state;
-
   }
 };
 
